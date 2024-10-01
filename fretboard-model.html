@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fretboard.js Generator</title>
+    <style>
+      body { font: 14px ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+      #canvas { width:800px; margin:20px auto; }
+      #canvas h2 { text-align:center; }
+      .fretboard { }
+      .fret-title { font-size: 16px; display: block; margin: 0 0 5px; }
+    </style>
+    <script type="text/javascript">
+
+      var proj_scripts  = [ 'fretboard.umd.min.js', 'fretutils.js' ];
+      var proj_dir      =   'file:///Users/ray/goto/music-study/Tools/fretboardjs/';
+
+      const loader = (src, loadfn)=> {
+        var scr = document.createElement('script');
+        scr.src = proj_dir + src;
+        scr.onload = loadfn;
+        document.head.appendChild(scr);
+      }
+
+      const load1 = (loadfn)=> { loader(proj_scripts[0], loadfn); }
+      const load2 = (loadfn)=> { loader(proj_scripts[1], loadfn); }
+
+      load1(function() {
+        load2(function() {
+          document.dispatchEvent(new Event('FretboardLoaded'));
+        });
+      });
+
+    </script>
+</head>
+<body>
+
+<div id="canvas"></div>
+
+<script>
+
+  document.addEventListener('FretboardLoaded', function() {
+
+    document.title = 'Fretboard.js Generator';
+
+
+    const canvas = document.querySelector('#canvas');
+
+
+    var chords = [
+      { name:"G Major", pos:[{ s: 1, f: 3 }, { s: 2, f: 3 }, { s: 3, f: 0 }, { s: 4, f: 0 }, { s: 5, f: 2 }, { s: 6, f: 3 }] },
+      { name:"C Major", pos:[{ s: 1, f: 0 }, { s: 2, f: 1 }, { s: 3, f: 0 }, { s: 4, f: 2 }, { s: 5, f: 3 }, { s: 6, f: 0 }] },
+      { name:"D Major", pos:[{ s: 1, f: 2 }, { s: 2, f: 3 }, { s: 3, f: 2 }, { s: 4, f: 0 }] },
+      { name:"E Minor", pos:[{ s: 1, f: 0 }, { s: 2, f: 0 }, { s: 3, f: 0 }, { s: 4, f: 2 }, { s: 5, f: 2 }, { s: 6, f: 0 }] }
+    ];
+
+// - https://github.com/moonwave99/fretboard.js/blob/master/site/scripts/examples/systems.js
+// - https://moonwave99.github.io/fretboard.js/documentation-fretboard.html
+
+    var guitar_notes = standard_guitar_strings(30);
+    var final_chords = [];
+
+    chords.forEach(function(v){
+      var chord = { name: v.name, positions: [] };
+      v.pos.forEach(function(pv){
+        chord.positions.push({ 
+          string  : pv.s, 
+          fret    : pv.f,
+          label   : guitar_notes['s' + pv.s][pv.f].note,
+        });
+      });
+      final_chords.push(chord);
+    });
+
+
+    var title = 'G Major Chord Progressions';
+
+    canvas.innerHTML += '<h2>' + title + '</h2>';
+
+
+    final_chords.forEach((chord, index) => {
+
+      var opts = {
+          el: '#chord' + (index + 1),
+          dotStrokeWidth: 1.5,
+          dotSize: 30,
+          dotTextSize: 16,
+          //dotText: function(d) { console.log(d); return d.text; },
+          dotText: ({ label }) => label,
+          height: 200,
+          width: 800,
+      };
+
+      canvas.innerHTML += [
+
+        '<div><b class="fret-title">' + chord.name + '</b></div>',
+        '<div id="chord' + ( index + 1 ) + '" class="fretboard"></div>',
+
+      ].join('\n');
+
+      var fb = new fretboard.Fretboard(opts);
+
+      fb.setDots(chord.positions)
+      fb.render();
+
+    });
+
+  });
+
+
+/*
+const fretboard = new Fretboard({
+  el: document.querySelector(...),
+  width: 300,
+  height: 200,
+  bottomPadding: 0,
+  scaleFrets: false,
+  stringWidth: 2,
+  fretWidth: 2,
+  fretCount: 3,
+  dotSize: 25,
+  dotStrokeWidth: 3,
+  fretNumbersMargin: 30,
+  showFretNumbers: false
+})
+
+fretboard.renderChord('x32010');
+
+// this is a shorthand for:
+fretboard.renderChord([
+  { string: 5, fret: 3 },
+  { string: 4, fret: 2 },
+  { string: 2, fret: 1 }
+]);
+
+// optional
+fretboard.muteStrings({ strings: [6] });
+
+// -- Barres are supported by passing either a single Barre parameter, or an array of them: -- //
+
+// renders a F major in first position
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false,
+  crop: true
+});
+
+fretboard.renderChord('133211', { fret: 1 });
+
+// renders a B minor in second position
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false,
+  crop: true
+});
+
+fretboard.renderChord('x24432', { fret: 2, stringFrom: 5 });
+
+// renders a C major in third position
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false,
+  crop: true
+});
+
+fretboard.renderChord('x35553', [
+  { fret: 3, stringFrom: 5 },
+  { fret: 5, stringFrom: 4, stringTo: 2 }
+]);
+*/
+
+</script>
+
+</body>
+</html>
