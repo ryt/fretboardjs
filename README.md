@@ -41,8 +41,8 @@ function standard_guitar_strings(total_notes) {
 }
 ```
 
-Then run the function as follows for a guitar with 25 frets.
+Then run the function as follows for a guitar with 24 frets.
 
 ```javascript
-standard_guitar_strings(25);
+standard_guitar_strings(24);
 ```
