@@ -1,8 +1,10 @@
 ## Fretboard.js Diagram Generator
 
-To generate a diagram, copy `fretboard-model.html` and set freatboards with string and fret numbers for your practice sheet. Powered by [/moonwave99/fretboard.js](/moonwave99/fretboard.js).
+To generate a diagram, copy `fretboard-model.html` and create a `fretboard.Fretboard()` for each diagram with string and fret numbers. Diagrams are creating using [/moonwave99/fretboard.js](/moonwave99/fretboard.js). Check the docs for more options.
 
 **Example: G Major Chord Progressions**
+
+> pos = positions, s = string, f = fret
 
 ```javascript
 var chords = [
