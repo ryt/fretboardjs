@@ -24,7 +24,7 @@ You can generate note lists for any musical instrument using `note_list_generate
 
 **Example**
 
-Generate strings with frets and notes for a guitar with standard tuning. Note: this funciton is already available in `fretutils.js`.
+Generate strings with frets and notes for a guitar with standard tuning. Note: this function is already available in `fretutils.js`.
 
 ```javascript
 function standard_guitar_strings(total_notes) {
