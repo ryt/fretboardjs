@@ -1,4 +1,7 @@
-
+/*!
+ * fretutils.js
+ * Copyright (C) 2024 http://github.com/ryt
+ */
 
 function note_list_generate(start_note, total_notes) {
   // -- Generate a list of notes starting at <start_note> and ending after # of <total_notes> (similar to a guitar fretboard). -- //
